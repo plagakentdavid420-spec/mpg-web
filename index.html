@@ -802,7 +802,7 @@
 
         function updateRegistrationFee() {
             const selectedEvent = document.getElementById('reg-event').value;
-            const pricePerHead = EVENT_PRICES[selectedEvent] || 1500;
+            const pricePerHead = EVENT_PRICES[selectedEvent] || 200;
             const total = pricePerHead * currentDelegateCount;
 
             const feeDisplay = document.getElementById('total-fee-display');
