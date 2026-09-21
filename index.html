@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mindanao Pastors Group (MPG) | Fellowship & Ministry</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        mpg: {
+                            dark: '#073b24',      /* Deep forest green */
+                            DEFAULT: '#0d5c3a',   /* Primary emerald green */
+                            medium: '#15803d',    /* Rich mid green */
+                            light: '#22c55e',     /* Bright accent green */
+                            soft: '#f0fdf4',      /* Mint tint light bg */
+                            sage: '#e6f4ea',      /* Soft sage */
+                            accent: '#eab308'     /* Gold accent hint */
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom scrollbars and transition tweaks */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f0fdf4; }
+        ::-webkit-scrollbar-thumb { background: #15803d; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #0d5c3a; }
+        
+        .bg-pattern {
+            background-color: #0d5c3a;
+            background-image: radial-gradient(rgba(255, 255, 255, 0.12) 1px, transparent 0);
+            background-size: 20px 20px;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col selection:bg-mpg-light selection:text-white">
+
+    <!-- TOP ANNOUNCEMENT BAR -->
+    <div class="bg-mpg-dark text-emerald-100 text-xs py-2 px-4">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center text-center sm:text-left gap-1">
+            <p><i class="fa-solid fa-bullhorn text-mpg-light mr-1"></i> Registration is open for <strong>Mindanao Youth Fellowship Camp 2026</strong> in Davao!</p>
+            <div class="flex items-center space-x-4">
+                <a href="#events" class="hover:underline font-semibold text-white">View Details &rarr;</a>
+                <span class="hidden sm:inline text-slate-500">|</span>
+                <span class="hidden sm:inline"><i class="fa-solid fa-phone text-mpg-light mr-1"></i> (082) 298-7654</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN STICKY NAVIGATION -->
+    <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-emerald-100 shadow-sm transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                
+                <!-- BRAND LOGO & TITLE -->
+                <a href="#" class="flex items-center space-x-3.5 group">
+                    <div class="relative w-12 h-12 flex items-center justify-center">
+                    <img 
+                        src="logo.png" 
+                        alt="Mindanao Pastors Group Logo"
+                        class="w-12 h-12 object-contain group-hover:scale-105 transition-transform duration-200"
+                        >
+                    </div>
+                    
+                    <div class="flex flex-col">
+                        <span class="font-extrabold text-2xl text-mpg-dark tracking-tight leading-none group-hover:text-mpg transition-colors">
+                            MPG
+                        </span>
+                        <span class="text-xs font-semibold text-mpg text-emerald-800 uppercase tracking-widest mt-1">
+                            Mindanao Pastors Group
+                        </span>
+                    </div>
+                </a>
+
+                <!-- DESKTOP NAVIGATION -->
+                <nav class="hidden md:flex items-center space-x-7">
+                    <a href="#home" class="text-slate-700 hover:text-mpg font-medium transition-colors">Home</a>
+                    <a href="#about" class="text-slate-700 hover:text-mpg font-medium transition-colors">About Us</a>
+                    <a href="#events" class="text-slate-700 hover:text-mpg font-medium transition-colors">Events & Retreats</a>
+                    <a href="#registration" class="text-slate-700 hover:text-mpg font-medium transition-colors">Camp Registration</a>
+                    <a href="#contact" class="text-slate-700 hover:text-mpg font-medium transition-colors">Contact</a>
+                </nav>
+
+                <!-- HEADER ACTION BUTTONS (GUEST / LOGGED IN STATE) -->
+                <div class="hidden md:flex items-center space-x-3">
+                    <!-- Guest Button -->
+                    <div id="guest-nav-actions">
+                        <button onclick="openLoginModal()" class="inline-flex items-center space-x-2 bg-emerald-50 text-mpg hover:bg-mpg hover:text-white border border-emerald-200 font-semibold px-4 py-2.5 rounded-xl transition-all duration-200">
+                            <i class="fa-solid fa-user-lock text-sm"></i>
+                            <span>Member Login</span>
+                        </button>
+                    </div>
+
+                    <!-- Logged In User Pill (Hidden by default) -->
+                    <div id="user-nav-actions" class="hidden flex items-center space-x-3">
+                        <div class="flex items-center space-x-2 bg-mpg-soft border border-emerald-200 px-3 py-1.5 rounded-full">
+                            <div class="w-7 h-7 bg-mpg text-white rounded-full flex items-center justify-center font-bold text-xs">
+                                <span id="user-avatar-initials">P</span>
+                            </div>
+                            <span id="nav-user-name" class="text-xs font-bold text-mpg-dark">Pastor John</span>
+                        </div>
+                        <button onclick="logoutUser()" class="text-xs font-medium text-slate-500 hover:text-rose-600 px-2 py-1 rounded transition-colors" title="Logout">
+                            <i class="fa-solid fa-right-from-bracket mr-1"></i> Logout
+                        </button>
+                    </div>
+                </div>
+
+                <!-- MOBILE MENU TOGGLE -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="text-slate-700 hover:text-mpg p-2 rounded-lg hover:bg-emerald-50 focus:outline-none" aria-label="Toggle Navigation">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- MOBILE MENU DROPDOWN -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-emerald-100 px-4 pt-2 pb-6 space-y-3 shadow-lg">
+            <a href="#home" onclick="toggleMobileMenu()" class="block px-3 py-2 rounded-lg font-medium text-slate-700 hover:bg-mpg-soft hover:text-mpg">Home</a>
+            <a href="#about" onclick="toggleMobileMenu()" class="block px-3 py-2 rounded-lg font-medium text-slate-700 hover:bg-mpg-soft hover:text-mpg">About Us</a>
+            <a href="#events" onclick="toggleMobileMenu()" class="block px-3 py-2 rounded-lg font-medium text-slate-700 hover:bg-mpg-soft hover:text-mpg">Events & Retreats</a>
+            <a href="#registration" onclick="toggleMobileMenu()" class="block px-3 py-2 rounded-lg font-medium text-slate-700 hover:bg-mpg-soft hover:text-mpg">Camp Registration</a>
+            <a href="#contact" onclick="toggleMobileMenu()" class="block px-3 py-2 rounded-lg font-medium text-slate-700 hover:bg-mpg-soft hover:text-mpg">Contact</a>
+            
+            <div class="pt-3 border-t border-slate-100">
+                <div id="mobile-guest-action">
+                    <button onclick="toggleMobileMenu(); openLoginModal();" class="w-full bg-mpg text-white py-2.5 rounded-lg font-semibold shadow">
+                        <i class="fa-solid fa-user mr-2"></i> Member Login
+                    </button>
+                </div>
+                <div id="mobile-user-action" class="hidden flex items-center justify-between bg-mpg-soft p-3 rounded-lg">
+                    <span id="mobile-nav-user-name" class="text-sm font-bold text-mpg-dark">Pastor John</span>
+                    <button onclick="logoutUser()" class="text-xs text-rose-600 font-semibold hover:underline">Logout</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow">
+        <!-- HERO SECTION -->
+        <section id="home" class="relative bg-pattern text-white overflow-hidden py-20 lg:py-28">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div class="grid lg:grid-cols-12 gap-12 items-center">
+                    
+                    <!-- HERO LEFT TEXT -->
+                    <div class="lg:col-span-7 text-center lg:text-left space-y-6">
+                        <div class="inline-flex items-center space-x-2 bg-white/15 backdrop-blur-md border border-white/20 rounded-full px-4 py-1.5 text-xs sm:text-sm font-semibold text-emerald-100">
+                            <span class="w-2.5 h-2.5 rounded-full bg-mpg-light animate-ping"></span>
+                            <span>Official Network for Mindanao Gospel Leaders</span>
+                        </div>
+                        
+                        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-tight">
+                            Uniting Leaders, <br>
+                            <span class="text-emerald-300">Transforming Mindanao.</span>
+                        </h1>
+                        
+                        <p class="text-lg sm:text-xl text-emerald-100/90 max-w-2xl mx-auto lg:mx-0 font-light leading-relaxed">
+                            Welcome to <strong>Mindanao Pastors Group (MPG)</strong>. Empowering local pastors and church leaders through authentic fellowship, strategic ministry alignment, and leadership development across Mindanao.
+                        </p>
+                        
+                        <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-4">
+                            <a href="#registration" class="w-full sm:w-auto text-center bg-white text-mpg-dark hover:bg-emerald-50 font-extrabold px-8 py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200">
+                                <i class="fa-solid fa-campground mr-2 text-mpg"></i> Register for Camp 2026
+                            </a>
+                            <a href="#events" class="w-full sm:w-auto text-center bg-mpg-dark/60 hover:bg-mpg-dark text-white font-semibold px-8 py-4 rounded-xl border border-emerald-400/30 backdrop-blur-sm transition-all duration-200">
+                                View Upcoming Events
+                            </a>
+                        </div>
+
+                        <!-- Mini stats banner -->
+                        <div class="pt-8 grid grid-cols-3 gap-4 border-t border-emerald-500/30 max-w-lg mx-auto lg:mx-0">
+                            <div>
+                                <span class="block text-2xl sm:text-3xl font-extrabold text-white">500+</span>
+                                <span class="text-xs text-emerald-200">Active Pastors</span>
+                            </div>
+                            <div>
+                                <span class="block text-2xl sm:text-3xl font-extrabold text-white">6</span>
+                                <span class="text-xs text-emerald-200">Mindanao Regions</span>
+                            </div>
+                            <div>
+                                <span class="block text-2xl sm:text-3xl font-extrabold text-white">Annual</span>
+                                <span class="text-xs text-emerald-200">Youth Camps</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- HERO RIGHT LOGO SHIELD DISPLAY CARD -->
+                    <div class="lg:col-span-5 flex justify-center">
+                        <div class="relative w-full max-w-sm bg-white/10 backdrop-blur-xl p-8 rounded-3xl border border-white/20 shadow-2xl text-center space-y-6">
+                            
+                            <!-- Green and White Emblem Showcase -->
+                            <div class="relative mx-auto w-36 h-36 bg-white rounded-3xl p-4 shadow-xl border-4 border-mpg-light flex flex-col items-center justify-center">
+                                <div class="w-16 h-16 bg-mpg rounded-2xl flex items-center justify-center text-white text-3xl shadow-md mb-1">
+                                    <div class="relative w-12 h-12 flex items-center justify-center">
+    <img 
+        src="logo.png" 
+        alt="Mindanao Pastors Group Logo"
+        class="w-12 h-12 object-contain group-hover:scale-105 transition-transform duration-200"
+    >
+</div>
+                                </div>
+                                <span class="font-extrabold text-mpg-dark text-lg tracking-wider">MPG</span>
+                                <span class="text-[9px] text-emerald-700 font-bold uppercase tracking-widest">MINDANAO</span>
+                            </div>
+
+                            <div>
+                                <h3 class="text-2xl font-extrabold text-white">Mindanao Pastors Group</h3>
+                                <p class="text-xs text-emerald-200 mt-1">Green & White Banner of Hope and Unity</p>
+                            </div>
+
+                            <!-- User Auth Status Indicator Box -->
+                            <div id="hero-auth-badge" class="bg-white/10 p-3 rounded-2xl border border-white/10 text-xs text-emerald-100 flex items-center justify-between">
+                                <div class="flex items-center space-x-2">
+                                    <i class="fa-solid fa-circle-user text-emerald-300 text-lg"></i>
+                                    <span id="hero-auth-status">Guest Visitor</span>
+                                </div>
+                                <button onclick="openLoginModal()" class="text-xs underline hover:text-white font-semibold">Sign In</button>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ABOUT & CORE PILLARS SECTION -->
+        <section id="about" class="py-20 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <span class="text-xs font-bold uppercase tracking-widest text-mpg bg-emerald-100 px-3 py-1 rounded-full">Our Core Vision</span>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mt-3">Empowering Pastors, Strengthening Churches</h2>
+                    <p class="mt-4 text-slate-600 text-base sm:text-lg">
+                        The Mindanao Pastors Group exists to foster spiritual unity, leadership excellence, and collaborative outreach across the island of Mindanao.
+                    </p>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-8">
+                    <!-- Pillar 1 -->
+                    <div class="bg-mpg-soft border border-emerald-100 rounded-2xl p-8 hover:shadow-lg transition-all duration-300 group">
+                        <div class="w-14 h-14 bg-mpg text-white rounded-2xl flex items-center justify-center text-2xl shadow-md mb-6 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-handshake-angle"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900 mb-2">Pastoral Fellowship</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed">
+                            Creating safe regional hubs where ministers can build genuine friendships, pray for one another, and prevent ministry burnout.
+                        </p>
+                    </div>
+
+                    <!-- Pillar 2 -->
+                    <div class="bg-mpg-soft border border-emerald-100 rounded-2xl p-8 hover:shadow-lg transition-all duration-300 group">
+                        <div class="w-14 h-14 bg-mpg text-white rounded-2xl flex items-center justify-center text-2xl shadow-md mb-6 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-campground"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900 mb-2">Youth & Leader Camps</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed">
+                            Organizing annual youth retreats, leadership camps, and discipleship conferences to train the next generation of Christian leaders.
+                        </p>
+                    </div>
+
+                    <!-- Pillar 3 -->
+                    <div class="bg-mpg-soft border border-emerald-100 rounded-2xl p-8 hover:shadow-lg transition-all duration-300 group">
+                        <div class="w-14 h-14 bg-mpg text-white rounded-2xl flex items-center justify-center text-2xl shadow-md mb-6 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-earth-asia"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900 mb-2">Mindanao Mission Outreach</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed">
+                            Combining resources to support rural church plantings, disaster relief efforts, and community assistance programs in remote provinces.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- UPCOMING EVENTS SECTION -->
+        <section id="events" class="py-20 bg-slate-50 border-t border-slate-200">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-widest text-mpg bg-emerald-100 px-3 py-1 rounded-full">Gatherings & Conferences</span>
+                        <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mt-3">Upcoming MPG Events</h2>
+                        <p class="text-slate-600 mt-2">Filter and view upcoming summits, camps, and regional seminars.</p>
+                    </div>
+
+                    <!-- EVENT FILTER TABS -->
+                    <div class="flex flex-wrap gap-2 bg-white p-1.5 rounded-xl border border-slate-200 shadow-sm">
+                        <button onclick="filterEvents('all')" class="event-tab active bg-mpg text-white font-semibold text-xs sm:text-sm px-4 py-2 rounded-lg transition-all" data-tab="all">All Events</button>
+                        <button onclick="filterEvents('camp')" class="event-tab text-slate-600 hover:text-mpg font-semibold text-xs sm:text-sm px-4 py-2 rounded-lg transition-all" data-tab="camp">Camps & Retreats</button>
+                        <button onclick="filterEvents('summit')" class="event-tab text-slate-600 hover:text-mpg font-semibold text-xs sm:text-sm px-4 py-2 rounded-lg transition-all" data-tab="summit">Conferences</button>
+                        <button onclick="filterEvents('seminar')" class="event-tab text-slate-600 hover:text-mpg font-semibold text-xs sm:text-sm px-4 py-2 rounded-lg transition-all" data-tab="seminar">Seminars</button>
+                    </div>
+                </div>
+
+                <!-- EVENTS GRID -->
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    
+                    <!-- Event 1: Youth Camp -->
+                    <div class="event-card bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 flex flex-col" data-category="camp">
+                        <div class="relative bg-mpg p-6 text-white">
+                            <span class="absolute top-4 right-4 bg-emerald-300 text-mpg-dark text-xs font-extrabold px-3 py-1 rounded-full uppercase">Featured Camp</span>
+                            <div class="text-3xl font-extrabold">24-27</div>
+                            <div class="text-xs uppercase tracking-wider text-emerald-200 font-bold">OCTOBER 2026</div>
+                        </div>
+                        <div class="p-6 flex-grow flex flex-col justify-between space-y-4">
+                            <div>
+                                <h3 class="text-xl font-bold text-slate-900">Mindanao Youth Fellowship Camp 2026</h3>
+                                <p class="text-xs font-semibold text-mpg mt-1"><i class="fa-solid fa-location-dot mr-1"></i> Lake Sebu </p>
+                                <p class="text-slate-600 text-sm mt-3">A 4-day spiritual retreat for young delegates and ministry leaders to deepen faith and build lasting connections.</p>
+                            </div>
+                            <div class="pt-4 border-t border-slate-100 flex items-center justify-between">
+                                <div>
+                                    <span class="text-xs text-slate-400 block">Registration Fee</span>
+                                    <span class="text-sm font-bold text-slate-800">₱200 / delegate</span>
+                                </div>
+                                <button onclick="quickSelectEvent('Mindanao Youth Fellowship Camp 2026')" class="bg-mpg hover:bg-mpg-dark text-white text-xs font-bold px-4 py-2.5 rounded-lg transition-colors">
+                                    Register Now
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Event 2: Leadership Summit -->
+                    <div class="event-card bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 flex flex-col" data-category="summit">
+                        <div class="relative bg-mpg-dark p-6 text-white">
+                            <span class="absolute top-4 right-4 bg-white/20 text-white text-xs font-extrabold px-3 py-1 rounded-full uppercase">Pastors Only</span>
+                            <div class="text-3xl font-extrabold">12-14</div>
+                            <div class="text-xs uppercase tracking-wider text-emerald-200 font-bold">NOVEMBER 2026</div>
+                        </div>
+                        <div class="p-6 flex-grow flex flex-col justify-between space-y-4">
+                            <div>
+                                <h3 class="text-xl font-bold text-slate-900">Annual Pastors Leadership Summit</h3>
+                                <p class="text-xs font-semibold text-mpg mt-1"><i class="fa-solid fa-location-dot mr-1"></i> Surallah</p>
+                                <p class="text-slate-600 text-sm mt-3">Empowering senior and associate pastors with tools for church growth, discipleship strategies, and mental health care.</p>
+                            </div>
+                            <div class="pt-4 border-t border-slate-100 flex items-center justify-between">
+                                <div>
+                                    <span class="text-xs text-slate-400 block">Registration Fee</span>
+                                    <span class="text-sm font-bold text-slate-800">₱500 / pastor</span>
+                                </div>
+                                <button onclick="quickSelectEvent('Annual Pastors Leadership Summit 2026')" class="bg-mpg hover:bg-mpg-dark text-white text-xs font-bold px-4 py-2.5 rounded-lg transition-colors">
+                                    Register Now
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Event 3: Worship & Prayer Seminar -->
+                    <div class="event-card bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 flex flex-col" data-category="seminar">
+                        <div class="relative bg-emerald-800 p-6 text-white">
+                            <span class="absolute top-4 right-4 bg-emerald-200 text-emerald-900 text-xs font-extrabold px-3 py-1 rounded-full uppercase">Workshop</span>
+                            <div class="text-3xl font-extrabold">05</div>
+                            <div class="text-xs uppercase tracking-wider text-emerald-200 font-bold">DECEMBER 2026</div>
+                        </div>
+                        <div class="p-6 flex-grow flex flex-col justify-between space-y-4">
+                            <div>
+                                <h3 class="text-xl font-bold text-slate-900">Worship Leaders & Prayer Seminar</h3>
+                                <p class="text-xs font-semibold text-mpg mt-1"><i class="fa-solid fa-location-dot mr-1"></i> Sta. Cruz</p>
+                                <p class="text-slate-600 text-sm mt-3">Equipping church musicians, vocalists, and intercessors for high-impact congregational ministry.</p>
+                            </div>
+                            <div class="pt-4 border-t border-slate-100 flex items-center justify-between">
+                                <div>
+                                    <span class="text-xs text-slate-400 block">Registration Fee</span>
+                                    <span class="text-sm font-bold text-slate-800">₱800 / person</span>
+                                </div>
+                                <button onclick="quickSelectEvent('Worship Leaders & Prayer Seminar')" class="bg-mpg hover:bg-mpg-dark text-white text-xs font-bold px-4 py-2.5 rounded-lg transition-colors">
+                                    Register Now
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- CAMP REGISTRATION FORM SECTION -->
+        <section id="registration" class="py-20 bg-white">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <div class="bg-mpg-soft border border-emerald-200 rounded-3xl p-8 sm:p-12 shadow-xl relative overflow-hidden">
+                    <div class="absolute -top-10 -right-10 w-40 h-40 bg-emerald-200/50 rounded-full blur-2xl"></div>
+
+                    <div class="text-center max-w-2xl mx-auto mb-10">
+                        <span class="text-xs font-bold uppercase tracking-widest text-mpg bg-emerald-100 px-3 py-1 rounded-full">Online Registration</span>
+                        <h2 class="text-3xl font-extrabold text-slate-900 mt-2">Camp & Event Registration Portal</h2>
+                        <p class="text-slate-600 text-sm mt-2">Fill out the official form below to reserve individual or group delegate slots for MPG events.</p>
+                    </div>
+
+                    <!-- Member Pre-fill Banner -->
+                    <div id="registration-member-banner" class="hidden mb-6 bg-white border border-emerald-300 p-4 rounded-xl flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <i class="fa-solid fa-circle-check text-mpg text-xl"></i>
+                            <span class="text-xs sm:text-sm text-slate-700">Logged in as <strong id="reg-member-name">Pastor</strong>. Form pre-filled with your registered church details.</span>
+                        </div>
+                        <span class="text-xs font-bold text-mpg uppercase tracking-wider bg-emerald-50 px-2.5 py-1 rounded">Member Discount Applied</span>
+                    </div>
+
+                    <form id="camp-reg-form" onsubmit="handleRegistrationSubmit(event)" class="space-y-6">
+                        
+                        <!-- Event Selection -->
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">Select Event / Camp *</label>
+                            <select id="reg-event" required class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-mpg focus:border-mpg outline-none bg-white font-medium text-slate-800">
+                                <option value="Mindanao Youth Fellowship Camp 2026">Mindanao Youth Fellowship Camp 2026 (Lake Sebu) - ₱200/head</option>
+                                <option value="Annual Pastors Leadership Summit 2026">Annual Pastors Leadership Summit 2026 (Surallah) - ₱500/head</option>
+                                <option value="Worship Leaders & Prayer Seminar">Worship Leaders & Prayer Seminar (Sta. Cruz) - ₱800/head</option>
+                            </select>
+                        </div>
+
+                        <!-- Personal & Church Information -->
+                        <div class="grid sm:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">Lead Delegate Full Name *</label>
+                                <input type="text" id="reg-name" required placeholder="Pastor / Leader Name" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-mpg outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">Church / Ministry Name *</label>
+                                <input type="text" id="reg-church" required placeholder="e.g. Grace Fellowship Mindanao" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-mpg outline-none">
+                            </div>
+                        </div>
+
+                        <div class="grid sm:grid-cols-3 gap-6">
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">Contact Number *</label>
+                                <input type="tel" id="reg-phone" required placeholder="0912 345 6789" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-mpg outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">City / Province in Mindanao *</label>
+                                <select id="reg-city" required class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-mpg outline-none bg-white">
+                                    <option value="Davao City">Davao City / Region XI</option>
+                                    <option value="General Santos City">General Santos / SOCCSKSARGEN</option>
+                                    <option value="Cagayan de Oro">Cagayan de Oro / Region X</option>
+                                    <option value="Zamboanga City">Zamboanga Peninsula</option>
+                                    <option value="Butuan City">Butuan / Caraga</option>
+                                    <option value="Cotabato City">Cotabato / BARMM</option>
+                                    <option value="Other Area">Other Region</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">Email Address *</label>
+                                <input type="email" id="reg-email" required placeholder="pastor@example.com" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-mpg outline-none">
+                            </div>
+                        </div>
+
+                        <!-- Delegate Count & Dynamic Fee Calculation -->
+                        <div class="bg-white p-6 rounded-2xl border border-emerald-200 grid sm:grid-cols-2 gap-6 items-center">
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-2">Number of Delegates *</label>
+                                <div class="flex items-center space-x-3">
+                                    <button type="button" onclick="adjustDelegates(-1)" class="w-10 h-10 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-lg flex items-center justify-center">-</button>
+                                    <input type="number" id="reg-count" min="1" max="100" value="1" readonly class="w-16 text-center font-bold text-xl border-none outline-none">
+                                    <button type="button" onclick="adjustDelegates(1)" class="w-10 h-10 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-lg flex items-center justify-center">+</button>
+                                </div>
+                                <span class="text-[11px] text-slate-400 mt-1 block">Groups of 5+ receive complimentary MPG badges</span>
+                            </div>
+
+                            <div class="text-right sm:border-l sm:border-slate-100 sm:pl-6">
+                                <span class="text-xs font-semibold text-slate-500 uppercase block">Estimated Total Fee</span>
+                                <span id="total-fee-display" class="text-3xl font-extrabold text-mpg">₱200</span>
+                                <span id="discount-note" class="text-[11px] text-emerald-600 font-semibold block">Standard Delegate Rate</span>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="w-full bg-mpg hover:bg-mpg-dark text-white font-extrabold py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 flex items-center justify-center space-x-2 text-lg">
+                            <i class="fa-solid fa-paper-plane text-emerald-300"></i>
+                            <span>Submit Registration</span>
+                        </button>
+
+                    </form>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- CONTACT & PRAYER REQUEST SECTION -->
+        <section id="contact" class="py-20 bg-slate-50 border-t border-slate-200">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid lg:grid-cols-12 gap-12">
+                    
+                    <!-- Contact Info -->
+                    <div class="lg:col-span-5 space-y-8">
+                        <div>
+                            <span class="text-xs font-bold uppercase tracking-widest text-mpg bg-emerald-100 px-3 py-1 rounded-full">Get In Touch</span>
+                            <h2 class="text-3xl font-extrabold text-slate-900 tracking-tight mt-3">We are here to serve Mindanao</h2>
+                            <p class="text-slate-600 mt-4 leading-relaxed">
+                                Have questions about joining Mindanao Pastors Group, requesting prayer support, or hosting regional fellowship? Send us a message below.
+                            </p>
+                        </div>
+
+                        <div class="space-y-6">
+                            <div class="flex items-start space-x-4">
+                                <div class="w-12 h-12 bg-mpg text-white rounded-xl flex items-center justify-center text-xl shrink-0 shadow-sm">
+                                    <i class="fa-solid fa-church"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-slate-900">MPG Regional Secretariat</h4>
+                                    <p class="text-slate-600 text-sm">Surallah</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start space-x-4">
+                                <div class="w-12 h-12 bg-mpg text-white rounded-xl flex items-center justify-center text-xl shrink-0 shadow-sm">
+                                    <i class="fa-solid fa-envelope"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-slate-900">Email Address</h4>
+                                    <p class="text-slate-600 text-sm">info@mindanaopastorsgroup.org</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start space-x-4">
+                                <div class="w-12 h-12 bg-mpg text-white rounded-xl flex items-center justify-center text-xl shrink-0 shadow-sm">
+                                    <i class="fa-solid fa-phone"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-slate-900">Pastoral Care Line</h4>
+                                    <p class="text-slate-600 text-sm">+63 (082) 298-7654 / +63 917 123 4567</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Contact / Prayer Request Form -->
+                    <div class="lg:col-span-7">
+                        <div class="bg-white p-8 sm:p-10 rounded-3xl border border-slate-200 shadow-sm">
+                            <h3 class="text-xl font-bold text-slate-900 mb-6">Send Message or Prayer Request</h3>
+                            
+                            <form id="contact-form" onsubmit="handleContactSubmit(event)" class="space-y-5">
+                                <div class="grid sm:grid-cols-2 gap-5">
+                                    <div>
+                                        <label class="block text-xs font-bold uppercase text-slate-700 mb-2">Your Name *</label>
+                                        <input type="text" id="contact-name" required placeholder="Pastor / Delegate Name" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-mpg outline-none">
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-bold uppercase text-slate-700 mb-2">Email Address *</label>
+                                        <input type="email" id="contact-email" required placeholder="yourname@domain.com" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-mpg outline-none">
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="block text-xs font-bold uppercase text-slate-700 mb-2">Inquiry Type</label>
+                                    <select id="contact-type" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-mpg outline-none bg-white">
+                                        <option value="Prayer Request">Prayer Request</option>
+                                        <option value="General Inquiry">General Inquiry</option>
+                                        <option value="MPG Membership">Membership Application</option>
+                                        <option value="Event Sponsorship">Event Sponsorship / Partnership</option>
+                                    </select>
+                                </div>
+
+                                <div>
+                                    <label class="block text-xs font-bold uppercase text-slate-700 mb-2">Message or Prayer Points *</label>
+                                    <textarea id="contact-message" rows="4" required placeholder="How can MPG pray for or assist your ministry?" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-mpg outline-none"></textarea>
+                                </div>
+
+                                <button type="submit" class="w-full bg-mpg hover:bg-mpg-dark text-white font-bold py-3.5 rounded-xl shadow transition-all">
+                                    Send Message
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-mpg-dark text-emerald-100 border-t border-emerald-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+                
+                <div class="flex items-center space-x-3">
+                    <div class="relative w-12 h-12 flex items-center justify-center">
+    <img 
+        src="logo.png" 
+        alt="Mindanao Pastors Group Logo"
+        class="w-12 h-12 object-contain group-hover:scale-105 transition-transform duration-200"
+    >
+</div>
+                    <div>
+                        <span class="text-white font-bold text-lg block leading-tight">Mindanao Pastors Group</span>
+                        <span class="text-xs text-emerald-300"></span>
+                    </div>
+                </div>
+
+                <div class="flex flex-wrap justify-center gap-6 text-sm text-emerald-200">
+                    <a href="#home" class="hover:text-white">Home</a>
+                    <a href="#about" class="hover:text-white">About</a>
+                    <a href="#events" class="hover:text-white">Events</a>
+                    <a href="#registration" class="hover:text-white">Camp Registration</a>
+                    <a href="#contact" class="hover:text-white">Contact</a>
+                </div>
+
+                <div class="text-xs text-emerald-300 text-center md:text-right">
+                    &copy; <span id="year">2026</span> Mindanao Pastors Group. All rights reserved.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- MEMBER LOGIN MODAL -->
+    <div id="login-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-md w-full p-8 shadow-2xl border border-emerald-100 relative animate-in fade-in zoom-in duration-200">
+            <button onclick="closeLoginModal()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-600 text-xl font-bold p-1">
+                &times;
+            </button>
+
+            <!-- Modal Header -->
+            <div class="text-center mb-6">
+                <div class="w-14 h-14 bg-mpg-soft border-2 border-mpg text-mpg rounded-2xl mx-auto flex items-center justify-center text-2xl font-black mb-3">
+                    MPG
+                </div>
+                <h3 class="text-2xl font-extrabold text-slate-900">Member Portal Login</h3>
+                <p class="text-xs text-slate-500 mt-1">Access pastor resources, registered events & directory</p>
+            </div>
+
+            <!-- Login Form -->
+            <form onsubmit="handleLoginSubmit(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Role / Designation</label>
+                    <select id="login-role" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-mpg outline-none bg-white text-sm">
+                        <option value="Senior Pastor">Senior Pastor</option>
+                        <option value="Youth Director">Youth Director / Camp Leader</option>
+                        <option value="Associate Minister">Associate Minister</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Full Name</label>
+                    <input type="text" id="login-name" required value="Pastor Emmanuel Santos" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-mpg outline-none text-sm">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Email Address</label>
+                    <input type="email" id="login-email" required value="emmanuel@mindanaopastors.org" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-mpg outline-none text-sm">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Password</label>
+                    <input type="password" required value="••••••••" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-mpg outline-none text-sm">
+                </div>
+
+                <button type="submit" class="w-full bg-mpg hover:bg-mpg-dark text-white font-bold py-3 rounded-xl shadow transition-all mt-2">
+                    Sign In to Portal
+                </button>
+            </form>
+
+            <div class="mt-4 text-center">
+                <span class="text-xs text-slate-400">Default test login provided. Click "Sign In" to simulate logged-in status.</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- SUCCESS NOTIFICATION MODAL -->
+    <div id="success-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-sm w-full p-6 text-center shadow-2xl border border-emerald-100">
+            <div class="w-16 h-16 bg-emerald-100 text-mpg rounded-full flex items-center justify-center text-3xl mx-auto mb-4">
+                <i class="fa-solid fa-circle-check"></i>
+            </div>
+            <h3 id="success-title" class="text-xl font-extrabold text-slate-900">Registration Successful!</h3>
+            <p id="success-message" class="text-xs text-slate-600 mt-2 leading-relaxed">Your registration details have been logged in the MPG Mindanao Database.</p>
+            <button onclick="closeSuccessModal()" class="mt-6 w-full bg-mpg text-white font-bold py-2.5 rounded-xl">
+                Done
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Set dynamic year
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // State Management
+        let currentUser = null;
+        let currentDelegateCount = 1;
+        const EVENT_PRICES = {
+            'Mindanao Youth Fellowship Camp 2026': 1500,
+            'Annual Pastors Leadership Summit 2026': 2000,
+            'Worship Leaders & Prayer Seminar': 800
+        };
+
+        // Mobile Menu Toggle
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Login Modal Controls
+        function openLoginModal() {
+            document.getElementById('login-modal').classList.remove('hidden');
+        }
+
+        function closeLoginModal() {
+            document.getElementById('login-modal').classList.add('hidden');
+        }
+
+        // User Login Action
+        function handleLoginSubmit(event) {
+            event.preventDefault();
+            const name = document.getElementById('login-name').value;
+            const role = document.getElementById('login-role').value;
+            const email = document.getElementById('login-email').value;
+
+            currentUser = { name, role, email };
+            
+            // Update Header Nav
+            document.getElementById('guest-nav-actions').classList.add('hidden');
+            document.getElementById('mobile-guest-action').classList.add('hidden');
+            
+            document.getElementById('user-nav-actions').classList.remove('hidden');
+            document.getElementById('mobile-user-action').classList.remove('hidden');
+
+            document.getElementById('nav-user-name').textContent = name;
+            document.getElementById('mobile-nav-user-name').textContent = `${name} (${role})`;
+            document.getElementById('user-avatar-initials').textContent = name.charAt(0);
+
+            // Update Hero Badge
+            document.getElementById('hero-auth-status').textContent = `${role}: ${name}`;
+            document.getElementById('hero-auth-badge').classList.add('bg-emerald-800/80', 'border-emerald-400');
+
+            // Update Registration Banner & Fields
+            document.getElementById('registration-member-banner').classList.remove('hidden');
+            document.getElementById('reg-member-name').textContent = `${role} ${name}`;
+            document.getElementById('reg-name').value = name;
+            document.getElementById('reg-email').value = email;
+
+            closeLoginModal();
+            showSuccessModal("Welcome Back!", `Logged in as ${role} ${name}. Member privileges active.`);
+        }
+
+        function logoutUser() {
+            currentUser = null;
+            document.getElementById('guest-nav-actions').classList.remove('hidden');
+            document.getElementById('mobile-guest-action').classList.remove('hidden');
+            
+            document.getElementById('user-nav-actions').classList.add('hidden');
+            document.getElementById('mobile-user-action').classList.add('hidden');
+
+            document.getElementById('hero-auth-status').textContent = 'Guest Visitor';
+            document.getElementById('hero-auth-badge').classList.remove('bg-emerald-800/80', 'border-emerald-400');
+
+            document.getElementById('registration-member-banner').classList.add('hidden');
+            document.getElementById('reg-name').value = '';
+            document.getElementById('reg-email').value = '';
+            showSuccessModal("Logged Out", "You have been logged out of the MPG Member Portal.");
+        }
+
+        // Filter Events System
+        function filterEvents(category) {
+            const tabs = document.querySelectorAll('.event-tab');
+            const cards = document.querySelectorAll('.event-card');
+
+            tabs.forEach(tab => {
+                if (tab.getAttribute('data-tab') === category) {
+                    tab.classList.add('bg-mpg', 'text-white');
+                    tab.classList.remove('text-slate-600');
+                } else {
+                    tab.classList.remove('bg-mpg', 'text-white');
+                    tab.classList.add('text-slate-600');
+                }
+            });
+
+            cards.forEach(card => {
+                if (category === 'all' || card.getAttribute('data-category') === category) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // Quick Event Selection from Cards
+        function quickSelectEvent(eventName) {
+            const selectEl = document.getElementById('reg-event');
+            selectEl.value = eventName;
+            updateRegistrationFee();
+            document.getElementById('registration').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Delegate Counter Adjustments
+        function adjustDelegates(amount) {
+            const input = document.getElementById('reg-count');
+            let current = parseInt(input.value) || 1;
+            current = Math.max(1, Math.min(100, current + amount));
+            input.value = current;
+            currentDelegateCount = current;
+            updateRegistrationFee();
+        }
+
+        function updateRegistrationFee() {
+            const selectedEvent = document.getElementById('reg-event').value;
+            const pricePerHead = EVENT_PRICES[selectedEvent] || 1500;
+            const total = pricePerHead * currentDelegateCount;
+
+            const feeDisplay = document.getElementById('total-fee-display');
+            const noteDisplay = document.getElementById('discount-note');
+
+            feeDisplay.textContent = `₱${total.toLocaleString()}`;
+
+            if (currentUser) {
+                noteDisplay.textContent = "Member Discount Rate Applied";
+            } else if (currentDelegateCount >= 5) {
+                noteDisplay.textContent = "Group Delegate Rate (5+ Slots Reserved)";
+            } else {
+                noteDisplay.textContent = "Standard Delegate Rate";
+            }
+        }
+
+        document.getElementById('reg-event').addEventListener('change', updateRegistrationFee);
+
+        // Form Submit Handlers
+        function handleRegistrationSubmit(event) {
+            event.preventDefault();
+            const eventName = document.getElementById('reg-event').value;
+            const name = document.getElementById('reg-name').value;
+            const church = document.getElementById('reg-church').value;
+            const count = currentDelegateCount;
+
+            showSuccessModal(
+                "Registration Confirmed!",
+                `Thank you, ${name}! We have reserved ${count} slot(s) for ${church} at the "${eventName}". Confirmation details sent to your email.`
+            );
+        }
+
+        function handleContactSubmit(event) {
+            event.preventDefault();
+            const name = document.getElementById('contact-name').value;
+            showSuccessModal(
+                "Message Sent!",
+                `Thank you ${name}. The MPG Secretariat team in Mindanao has received your message/prayer request.`
+            );
+            document.getElementById('contact-form').reset();
+        }
+
+        // Success Modal Controls
+        function showSuccessModal(title, text) {
+            document.getElementById('success-title').textContent = title;
+            document.getElementById('success-message').textContent = text;
+            document.getElementById('success-modal').classList.remove('hidden');
+        }
+
+        function closeSuccessModal() {
+            document.getElementById('success-modal').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
